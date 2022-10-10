@@ -19,7 +19,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         //$ingredient->setName('Ingredient # 1')->setPrice('15.2');
-        for($i=0; $i<=10; $i++) {
+        for($i=0; $i<=50; $i++) {
             $ingredient = new Ingredient();
             //$ingredient->setName('Ingredient # '.$i)
             //            ->setPrice(rand(0,200));
