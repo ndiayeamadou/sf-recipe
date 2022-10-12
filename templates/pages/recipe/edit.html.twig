@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recipe - Edit{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h3 class="mt-4">Edition</h3>
+        {# {{ form(form) }} #}
+        {{ form_start(form) }}
+            <div class="form-group">
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name) }}
+                <p class="form-error">{{ form_errors(form.name) }}</p>
+            </div>
+            <div class="row col-md-12">
+                <div class="form-group col-md-3">
+                    {{ form_label(form.time) }}
+                    {{ form_widget(form.time) }}
+                    <p class="form-error">{{ form_errors(form.time) }}</p>
+                </div>
+                <div class="form-group col-md-2">
+                    {{ form_label(form.nbpers) }}
+                    {{ form_widget(form.nbpers) }}
+                    <p class="form-error">{{ form_errors(form.nbpers) }}</p>
+                </div>
+                <div class="form-group col-md-2">
+                    {{ form_label(form.hard) }}
+                    {{ form_widget(form.hard) }}
+                    <p class="form-error">{{ form_errors(form.hard) }}</p>
+                </div>
+                <div class="form-group col-md-3">
+                    {{ form_label(form.price) }}
+                    {{ form_widget(form.price) }}
+                    <p class="form-error">{{ form_errors(form.price) }}</p>
+                </div>
+                <div class="form-check col-md-2 mt-4">
+                    {{ form_label(form.isFavorite) }}
+                    {{ form_widget(form.isFavorite) }}
+                    <p class="form-error">{{ form_errors(form.isFavorite) }}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.description) }}
+                {{ form_widget(form.description) }}
+                <p class="form-error">{{ form_errors(form.description) }}</p>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.ingredients) }}
+                {{ form_widget(form.ingredients) }}
+                <p class="form-error">{{ form_errors(form.ingredients) }}</p>
+            </div>
+
+            <div class="form-group">
+                {{ form_row(form.submit) }}
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

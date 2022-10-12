@@ -15,6 +15,10 @@ php bin/console make:migration
 ```bash
 php bin/console doctrine:migrations:migrate
 ```
+* drop db
+```python
+php bin/console doctrine:database:drop
+```
 
 * in the development env :
 * Using fixtures to load fake data & also fakephp
