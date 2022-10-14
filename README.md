@@ -33,3 +33,12 @@ php bin/console doctrine:fixtures:load
 ```bash
 php bin/console make:form
 ```
+
+* make user
+```bash
+php bin/console make:user
+```
+* complete some attributes in User entity
+```bash
+php bin/console make:entity User
+```
