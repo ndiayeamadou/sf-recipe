@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    #[Route('/login', name: 'security.login', methods: ['GET', 'POST'])]
+    #[Route('/login', name: 'security_login', methods: ['GET', 'POST'])]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         // get the login error if there is one
@@ -29,7 +29,7 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    #[Route('/logout', name: 'security.logout', methods: ['GET', 'POST'])]
+    #[Route('/logout', name: 'security_logout', methods: ['GET', 'POST'])]
     public function logout() {}
 
 
@@ -52,7 +52,7 @@ class SecurityController extends AbstractController
             $user = $form->getData($request);
             $manager->persist($user);
             $manager->flush();
-            return $this->redirectToRoute('security.login');
+            return $this->redirectToRoute('security_login');
         }
 
         return $this->render('pages/security/register.html.twig',[
