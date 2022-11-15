@@ -33,7 +33,7 @@ class SecurityController extends AbstractController
     public function logout() {}
 
 
-    #[Route('/register', name: 'security.register', methods: ['GET', 'POST'])]
+    #[Route('/register', name: 'security_register', methods: ['GET', 'POST'])]
     public function register(Request $request, EntityManagerInterface $manager,
                 UserPasswordHasherInterface $userPasswordHasher) {
         $user = new User();

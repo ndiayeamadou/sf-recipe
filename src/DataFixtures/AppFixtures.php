@@ -23,32 +23,7 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $ingredients = [];
-        for($i = 0; $i <= 50; $i++) {
-            $ingredient = new Ingredient();
-            //$ingredient->setName('Ingredient # '.$i)
-            //            ->setPrice(rand(0,200));
-            /** using fakerphp */
-            $ingredient->setName($this->faker->word())->setPrice(rand(0, 200));
-            $ingredients[] = $ingredient;
-            $manager->persist($ingredient);
-        }
-
-        // Recipes
-        for($i=0; $i<=22; $i++) {
-            $recipe = new Recipe();
-            $recipe->setName($this->faker->word())->setPrice(rand(0, 1000))
-                    ->setTime(mt_rand(0, 1) == 0 ? mt_rand(0, 1440) : null)
-                    ->setNbpers(rand(1, 50))->setHard(rand(1, 5))->setDescription($this->faker->text(255))
-                    ->setIsFavorite(mt_rand(0, 1) == 0 ? false : true);
-
-            for($k = 0; $k < mt_rand(5, 15); $k++) {
-                $recipe->addIngredient($ingredients[mt_rand(0, count($ingredients) - 1)]);
-            }
-
-            $manager->persist($recipe);
-        }
-
+        $users = [];
         // USERS
         $plaintextPassword = "passer";
         for($u = 0; $u <= 5; $u++) {
@@ -58,8 +33,41 @@ class AppFixtures extends Fixture
                     ->setPseudo(mt_rand(0, 1) === 1 ? $this->faker->firstName() : null)
                     ->setEmail($this->faker->email)->setPassword($hashedPassword)
                     ->setRoles(['ROLE_USER']);
+                    
+            /** récupérer les utilisateurs dans 1 tableau */
+            $users[] = $user;
 
             $manager->persist($user);
+        }
+
+        $ingredients = [];
+        for($i = 0; $i <= 50; $i++) {
+            $ingredient = new Ingredient();
+            //$ingredient->setName('Ingredient # '.$i)
+            //            ->setPrice(rand(0,200));
+            /** using fakerphp */
+            $ingredient->setName($this->faker->word())->setPrice(rand(0, 200))
+                    ->setUser($users[mt_rand(0, count($users) - 1)]);
+                    
+            $ingredients[] = $ingredient;
+
+            $manager->persist($ingredient);
+        }
+
+        // Recipes
+        for($i=0; $i<=22; $i++) {
+            $recipe = new Recipe();
+            $recipe->setName($this->faker->word())->setPrice(rand(0, 1000))
+                    ->setTime(mt_rand(0, 1) == 0 ? mt_rand(0, 1440) : null)
+                    ->setNbpers(rand(1, 50))->setHard(rand(1, 5))->setDescription($this->faker->text(255))
+                    ->setIsFavorite(mt_rand(0, 1) == 0 ? false : true)
+                    ->setUser($users[mt_rand(0, count($users) - 1)]);
+
+            for($k = 0; $k < mt_rand(5, 15); $k++) {
+                $recipe->addIngredient($ingredients[mt_rand(0, count($ingredients) - 1)]);
+            }
+
+            $manager->persist($recipe);
         }
 
         $manager->flush();

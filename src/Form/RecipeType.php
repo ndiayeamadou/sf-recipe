@@ -11,16 +11,23 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\RangeType;
-use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 
 class RecipeType extends AbstractType
 {
+    /** make construction to get current user in symfony form */
+    private $security;
+
+    public function __construct(Security $security) {
+        $this->security = $security;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -65,14 +72,28 @@ class RecipeType extends AbstractType
                 'constraints' => [new Assert\NotNull()],
                 'required' => false
             ])
+            /* ->add('ingredients', EntityType::class, [
+                'class' => Ingredient::class,
+                // we can also use the query_builer
+                'query_builder' => function (IngredientRepository $ir) {
+                    return $ir->createQueryBuilder('u')->orderBy('u.name', 'ASC');
+                },
+
+                'choice_label' => 'name',
+
+                'multiple' => true,
+                'expanded' => 'true',
+            ]) */
+            /** we can also use the query_builer to customize query in order to display only ingredients created by user */
             ->add('ingredients', EntityType::class, [
                 'class' => Ingredient::class,
-                /** we can also use the query_builer */
-                /*
+                
                 'query_builder' => function (IngredientRepository $ir) {
-                    return $ir->createQueryBuilder('u')->orderBy('u.name', ASC);
-                }
-                */
+                    return $ir->createQueryBuilder('i')->where('i.user = :user' )
+                                ->orderBy('i.name', 'ASC')
+                                ->setParameter('user', $this->security->getUser());
+                },
+               
                 'choice_label' => 'name',
 
                 'multiple' => true,
