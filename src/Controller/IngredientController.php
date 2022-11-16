@@ -10,11 +10,14 @@ use App\Form\IngredientType;
 use App\Repository\IngredientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 
 class IngredientController extends AbstractController
 {
     #[Route('/ingredient', name: 'app_ingredient', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
     public function index(IngredientRepository $ingrRepository,
     PaginatorInterface $paginator, Request $request): Response
     {
@@ -37,6 +40,7 @@ class IngredientController extends AbstractController
     }
 
     #[Route('/ingredient/new', 'ingredient.new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
     public function new(Request $request, EntityManagerInterface $manager) : Response
     {
         $ingredient = new Ingredient();
@@ -66,6 +70,8 @@ class IngredientController extends AbstractController
     }
 
     /** 2 optional Edit metods | 1st one: Using ParamConverter */
+    /** for only connected user & current user equals to ingredient.user_id - so user can modify only his ingredients */
+    #[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
     #[Route('/ingredient/edit/{id}', 'ingredient.edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, EntityManagerInterface $manager, Ingredient $ingredient) : Response
     {
@@ -121,6 +127,7 @@ class IngredientController extends AbstractController
     }
 
     #[Route('/ingredient/delete/{id}', 'ingredient.delete', methods: ['GET'])]
+    #[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
     public function delete(EntityManagerInterface $manager, Ingredient $ingredient) : Response
     {
         $manager->remove($ingredient);

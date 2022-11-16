@@ -24,11 +24,13 @@
                 </li>
                 {% if app.user %}
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        {% if app.user.pseudo %} {{ app.user.pseudo }} {% else %} {{ app.user.fullname }} {% endif %}
+                    </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{{ path('user_profile') }}">Profile</a>
-                        <a class="dropdown-item" href="{{ path('user_edit', {'user':app.user.id}) }}">Editer mes infos</a>
-                        <a class="dropdown-item" href="{{ path('user_pwd_edit', {'user':app.user.id}) }}">Changer mot de passe</a>
+                        <a class="dropdown-item" href="{{ path('user_edit', {'id':app.user.id}) }}">Editer mes infos</a>
+                        <a class="dropdown-item" href="{{ path('user_pwd_edit', {'userEntity':app.user.id}) }}">Changer mot de passe</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ path('security_logout') }}">Logout</a>
                     </div>

@@ -7,6 +7,8 @@ use App\Form\RecipeType;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,12 +17,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class RecipeController extends AbstractController
 {
     #[Route('/recipe', name: 'recipe_index', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
     public function index(PaginatorInterface $paginator, Request $request, RecipeRepository $recipRepository): Response
     {
-        if(!$this->getUser()) {
+        /** IsGranted is the alternative way */
+        /* if(!$this->getUser()) {
             return $this->redirectToRoute('home.index');
         }
-
+        */
         $recipes = $paginator->paginate(
             /* $recipRepository->findAll(), */
             $recipRepository->findBy(['user' => $this->getUser()]),
@@ -30,6 +34,7 @@ class RecipeController extends AbstractController
         return $this->render('pages/recipe/index.html.twig', ['recipes' => $recipes,]);
     }
 
+    #[IsGranted('ROLE_USER')]
     #[Route('/recipe/new', 'recipe_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $manager) : Response
     {
@@ -54,6 +59,7 @@ class RecipeController extends AbstractController
     }
 
     #[Route('/recipe/edit/{id}', 'recipe_edit', methods: ['GET', 'POST'])]
+    #[Security("is_granted('ROLE_USER') and user === recipe.getUser()")]
     public function edit(EntityManagerInterface $manager, Recipe $recipe, Request $request) : Response
     {
         $form = $this->createForm(RecipeType::class, $recipe);
@@ -69,6 +75,7 @@ class RecipeController extends AbstractController
         return $this->render('pages/recipe/edit.html.twig', ['form' => $form->createView()]);
     }
 
+    #[Security("is_granted('ROLE_USER') and user === recipe.getUser()")]
     #[Route('/recipe/delete/{id}', 'recipe_delete', methods: ['GET', 'POST'])]
     public function delete(EntityManagerInterface $manager, Recipe $recipe) : Response
     {
