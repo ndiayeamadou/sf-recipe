@@ -85,4 +85,23 @@ class RecipeController extends AbstractController
         return $this->redirectToRoute('recipe_index');
     }
 
+    #[Route('/recipe/show/{id}', 'recipe_show')]
+    #[Security("is_granted('ROLE_USER') and recipe.getIsPublic() === true")]
+    public function show(Recipe $recipe)
+    {
+        return $this->render('pages/recipe/show.html.twig', [
+            'recipe' => $recipe
+        ]);
+    }
+
+    #[Route('/recipe/public', 'recipe_public')]
+    public function recipePublic(RecipeRepository $recipeRepository, PaginatorInterface $paginator, Request $request)
+    {
+        /* $recipes = $recipeRepository->findAll(); */
+        $recipes = $paginator->paginate($recipeRepository->findPublicRecipe(null), $request->query->getInt('page', 1), 10);
+        return $this->render('pages/recipe/public.html.twig', [
+            'recipes' => $recipes
+        ]);
+    }
+
 }

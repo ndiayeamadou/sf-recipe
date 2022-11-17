@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Public recipes{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+
+        <h2>Recettes partagées</h2>
+
+        {% if not recipes.items is same as([]) %}
+        <div class="d-flex justify-content-center flex-wrap">
+            {% for recipe in recipes %}
+                <div class="card border-secondary mb-3" style="max-width: 20rem;">
+                    <div class="card-header">#{{ recipe.id }}{{ recipe.createdAt|date('d-m-Y') }}</div>
+                    <div class="card-body">
+                        <h4 class="card-title">{{ recipe.name }}</h4>
+                        <p class="card-text">{{ recipe.description|slice(0, 100) ~ '...' }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% else %}
+            <h2>Aucune recette partagée</h2>
+        {% endif %}
+    </div>
+{% endblock %}

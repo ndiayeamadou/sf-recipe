@@ -30,6 +30,20 @@ class RecipeRepository extends ServiceEntityRepository
         }
     }
 
+    /** create query builder function */
+    public function findPublicRecipe(?int $nbRecipe)
+    {
+        $queryBuilder = $this->createQueryBuilder('r')
+                ->where('r.isPublic = 1')
+                ->orderBy('r.createdAt', 'DESC');
+
+                if($nbRecipe !== 0 || $nbRecipe !== null) {
+                    $queryBuilder->setMaxResults($nbRecipe);
+                }
+
+                return $queryBuilder->getQuery()->getResult();
+    }
+
     public function remove(Recipe $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);

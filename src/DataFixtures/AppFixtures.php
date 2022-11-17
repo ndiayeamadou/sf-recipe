@@ -61,6 +61,7 @@ class AppFixtures extends Fixture
                     ->setTime(mt_rand(0, 1) == 0 ? mt_rand(0, 1440) : null)
                     ->setNbpers(rand(1, 50))->setHard(rand(1, 5))->setDescription($this->faker->text(255))
                     ->setIsFavorite(mt_rand(0, 1) == 0 ? false : true)
+                    ->setIsPublic(mt_rand(0, 1) == 0 ? false : true)
                     ->setUser($users[mt_rand(0, count($users) - 1)]);
 
             for($k = 0; $k < mt_rand(5, 15); $k++) {
