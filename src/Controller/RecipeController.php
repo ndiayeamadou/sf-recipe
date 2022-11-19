@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Mark;
 use App\Entity\Recipe;
+use App\Form\MarkFormType;
 use App\Form\RecipeType;
+use App\Repository\MarkRepository;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -87,10 +90,40 @@ class RecipeController extends AbstractController
 
     #[Route('/recipe/show/{id}', 'recipe_show')]
     #[Security("is_granted('ROLE_USER') and recipe.getIsPublic() === true")]
-    public function show(Recipe $recipe)
+    public function show(Recipe $recipe, Request $request, EntityManagerInterface $emanager, MarkRepository $markRepository)
     {
+        /** Mark in order to recupère the current user & the recipe en question - ready to be save in DB */
+        $mark = new Mark();
+        $form = $this->createForm(MarkFormType::class, $mark);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $mark->setUser($this->getUser())->setRecipe($recipe);
+            
+            /** check if the user had already mark this recipe */
+            $existingMark = $markRepository->findOneBy([
+                'user'   => $this->getUser(),
+                'recipe' => $recipe
+            ]);
+
+            if(!$existingMark) {
+                $emanager->persist($mark);
+                //$this->addFlash('success', 'Votre note a bien été prise en compte.');
+            }else {
+                //dd($existingMark);
+                //$this->addFlash('success', 'Désolé, vous avez déjà noté cette recette.');
+                $existingMark->setMark(
+                    $form->getData()->getMark()
+                );
+            }
+            $emanager->flush();
+
+            $this->addFlash('success', 'Votre note a bien été prise en compte.');
+            return $this->redirectToRoute('recipe_show', ['id' => $recipe->getId()]);
+
+        }
+
         return $this->render('pages/recipe/show.html.twig', [
-            'recipe' => $recipe
+            'recipe' => $recipe, 'form' => $form->createView()
         ]);
     }
 

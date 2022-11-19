@@ -4,7 +4,20 @@
 
 {% block body %}
     <div class="container">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-dismissible alert-info">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('warning') %}
+            <div class="alert alert-dismissible alert-warning">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                {{ message }}
+            </div>
+        {% endfor %}
         <p class="mt-5">Nom de la recette : {{ recipe.name }}</p>
+        <p class="mt-5">Moyenne de cette recette : {{ (recipe.average | number_format(1)) }} / 5</p>
         <span class="badge bg-warning">Créée le {{ recipe.createdAt|date('d-m-Y') }}</span>
         <p>Price : {{ recipe.price }}</p>
         <p>Temps (en minutes) : {{ recipe.time }}</p>
@@ -15,5 +28,9 @@
                 <span class="badge bg-primary text-white">{{ ingredient.name }}</span>
             {% endfor %}
         </fieldset>
+
+        <div class="mark">
+            {{ form(form) }}
+        </div>
     </div>
 {% endblock %}
