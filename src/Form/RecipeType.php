@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class RecipeType extends AbstractType
 {
@@ -70,6 +71,10 @@ class RecipeType extends AbstractType
                 'attr' => ['class' => 'ml-3'], 'required' => false,
                 'label' => 'Favorite ?', 'label_attr' => ['class' => 'form-label mt-4'],
                 'constraints' => [new Assert\NotNull()],
+                'required' => false
+            ])
+            ->add('imageFile', VichImageType::class, [
+                'label' => 'Recipe image', 'label_attr' => ['class' => 'form-label mt-4'],
                 'required' => false
             ])
             /* ->add('ingredients', EntityType::class, [

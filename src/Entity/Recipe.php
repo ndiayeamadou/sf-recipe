@@ -9,10 +9,13 @@ use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[UniqueEntity('name')]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
+#[Vich\Uploadable]
 class Recipe
 {
     #[ORM\Id]
@@ -24,6 +27,12 @@ class Recipe
     #[Assert\NotBlank()]
     #[Assert\Length(min:2, max:50)]
     private ?string $name = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageName = null;
+
+    #[Vich\UploadableField(mapping: "recipe_images", fileNameProperty: 'imageName')]
+    private ?File $imageFile = null;
 
     #[ORM\Column(nullable: true)]
     #[Assert\Positive()]
@@ -71,7 +80,7 @@ class Recipe
     private ?User $user = null;
 
     #[ORM\Column]
-    private ?bool $isPublic = null;
+    private ?bool $isPublic = false;
 
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Mark::class, orphanRemoval: true)]
     private Collection $marks;
@@ -108,6 +117,38 @@ class Recipe
         $this->name = $name;
 
         return $this;
+    }
+
+    public function getImageName()
+    {
+        return $this->imageName;
+    }
+
+    public function setImageName(?string $imageName)
+    {
+        $this->imageName = $imageName;
+
+        return $this;
+    }
+
+    public function getImageFile() : ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageFile(?File $imageFile = null)
+    {
+        $this->imageFile = $imageFile;
+
+        // VERY IMPORTANT:
+        // It is required that at least one field changes if you are using Doctrine,
+        // otherwise the event listeners won't be called and the file is lost
+        //if(null !== $imageFile) {
+        if($imageFile) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+
     }
 
     public function getTime(): ?int

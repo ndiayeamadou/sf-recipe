@@ -29,7 +29,7 @@
             <th>Name</th>
             <th>Price</th>
             <th>Created At</th>
-            <th scope="col" colspan="2">Actions</th>
+            <th scope="col" colspan="3" class="text-center bg-light">Actions</th>
         </thead>
         <tbody>
             {% for recipe in recipes %}
@@ -38,6 +38,9 @@
                 <td>{{ recipe.name }}</td>
                 <td>{{ recipe.price }}</td>
                 <td>{{ recipe.createdAt | date('d/m/Y') }}</td>
+                <td>
+                    <a href="{{ path('recipe_show', {'id': recipe.id}) }}" class="btn btn-success">View</a>
+                </td>
                 <td>
                     <a href="{{ path('recipe_edit', {'id': recipe.id}) }}" class="btn btn-info">Edit</a>
                 </td>

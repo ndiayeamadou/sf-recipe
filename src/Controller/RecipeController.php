@@ -89,7 +89,7 @@ class RecipeController extends AbstractController
     }
 
     #[Route('/recipe/show/{id}', 'recipe_show')]
-    #[Security("is_granted('ROLE_USER') and recipe.getIsPublic() === true")]
+    #[Security("is_granted('ROLE_USER') and (recipe.getIsPublic() === true || recipe.getUser() === user)")]
     public function show(Recipe $recipe, Request $request, EntityManagerInterface $emanager, MarkRepository $markRepository)
     {
         /** Mark in order to recupère the current user & the recipe en question - ready to be save in DB */

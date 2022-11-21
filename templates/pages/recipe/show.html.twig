@@ -16,7 +16,11 @@
                 {{ message }}
             </div>
         {% endfor %}
+
         <p class="mt-5">Nom de la recette : {{ recipe.name }}</p>
+        <div>
+            <img src="{{ vich_uploader_asset(recipe, 'imageFile') }}" style="max-width: 400px;"/>
+        </div>
         <p class="mt-5">Moyenne de cette recette : {{ (recipe.average | number_format(1)) }} / 5</p>
         <span class="badge bg-warning">Créée le {{ recipe.createdAt|date('d-m-Y') }}</span>
         <p>Price : {{ recipe.price }}</p>
