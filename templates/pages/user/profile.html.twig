@@ -7,18 +7,6 @@
 </style>
 
 <div class="container">
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-dismissible alert-info">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            {{ message }}
-        </div>
-    {% endfor %}
-    {% for message in app.flashes('warning') %}
-        <div class="alert alert-dismissible alert-warning">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            {{ message }}
-        </div>
-    {% endfor %}
     <h3 class="mt-3">My Profile</h3>
 
     {# {{dump(app.user)}} #}

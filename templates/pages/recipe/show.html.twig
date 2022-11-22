@@ -4,28 +4,23 @@
 
 {% block body %}
     <div class="container">
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-dismissible alert-info">
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                {{ message }}
-            </div>
-        {% endfor %}
-        {% for message in app.flashes('warning') %}
-            <div class="alert alert-dismissible alert-warning">
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                {{ message }}
-            </div>
-        {% endfor %}
 
-        <p class="mt-5">Nom de la recette : {{ recipe.name }}</p>
-        <div>
-            <img src="{{ vich_uploader_asset(recipe, 'imageFile') }}" style="max-width: 400px;"/>
+        <div class="mt-4 d-flex justify-content-between">
+            <p class="">Nom de la recette : <strong class="text-uppercase">{{ recipe.name }}</strong></p>
+            <a href="{{ path('recipe_delete', {'id': recipe.id}) }}" class="btn btn-danger">Supprimer</a>
         </div>
-        <p class="mt-5">Moyenne de cette recette : {{ (recipe.average | number_format(1)) }} / 5</p>
-        <span class="badge bg-warning">Créée le {{ recipe.createdAt|date('d-m-Y') }}</span>
-        <p>Price : {{ recipe.price }}</p>
-        <p>Temps (en minutes) : {{ recipe.time }}</p>
-        <p>{{ recipe.description }}</p>
+        <div class="row">
+            <div class="col-6">
+                <img src="{{ vich_uploader_asset(recipe, 'imageFile') }}" style="max-width: 400px;"/>
+            </div>
+            <div class="col-6">
+                <p class="mt-5">Moyenne de cette recette : {{ (recipe.average | number_format(1)) }} / 5</p>
+                <span class="badge bg-warning">Créée le {{ recipe.createdAt|date('d-m-Y') }}</span>
+                <p>Price : {{ recipe.price }}</p>
+                <p>Temps (en minutes) : {{ recipe.time }}</p>
+                <p>{{ recipe.description }}</p>
+            </div>
+        </div>
         <fieldset>
             <legend><p class="mt-4">Ingrédients</p></legend>
             {% for ingredient in recipe.ingredients %}
