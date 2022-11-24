@@ -8,7 +8,7 @@
 
 <div class="container">
     <h2 class="d-flex justify-content-between mt-4 mb-4">
-        Recipes ✅ <a href="{{ path('recipe_new') }}" class="btn btn-primary">Add recipe</a>
+        Recipes ✅ <a href="{{ path('recipe_new') }}" class="btn btn-info">Add recipe</a>
     </h2>
 
     {# <div class="count mt-4">
@@ -21,9 +21,9 @@
             <th>Name</th>
             <th>Price</th>
             <th>Created At</th>
-            <th scope="col" colspan="3" class="text-center bg-light">Actions</th>
+            <th scope="col" colspan="3" class="text-center">Actions</th>
         </thead>
-        <tbody>
+        <tbody class="table-dark">
             {% for recipe in recipes %}
             <tr>
                 <td>{{ recipe.id }}</td>

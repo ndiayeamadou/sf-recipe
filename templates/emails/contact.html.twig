@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    
+    <body>
+        <div>
+            <p>Vous avez reçu un nouveau message de la part de :</p>
+            <hr>
+            <p><strong>Nom complet : </strong>{{ contact.fullname }}</p>
+            <p><strong>Email : </strong>{{ contact.email }}</p>
+            <p><strong>Objet : </strong>{{ contact.subject }}</p>
+            <p><strong>Message :</strong></p>
+            <p>{{ contact.message|raw }}</p>
+        </div>
+    </body>
+
+</html>
