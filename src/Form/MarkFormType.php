@@ -23,16 +23,16 @@ class MarkFormType extends AbstractType
                     '5' => 5
                 ],
                 'attr' => [
-                    'class' => 'form-control col-1'
+                    'class' => 'form-control'
                 ],
                 'label' => 'Noter la recette',
                 'label_attr' => [
-                    'class' => 'form-label mt-4'
+                    'class' => 'form-label'
                 ]
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => [
-                    'class' => 'form-control col-1 mt-1 btn btn-primary'
+                    'class' => 'form-control my-2 btn btn-primary'
                 ],
                 'label' => 'Noter'
             ])

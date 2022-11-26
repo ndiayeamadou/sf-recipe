@@ -7,17 +7,15 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="{{ path('home.index') }}">Home
-                        <span class="visually-hidden">(current)</span>
-                    </a>
+                    {# <a class="nav-link active" href="{{ path('home.index') }}">Home</a> #}
                 </li>
                 {% if app.user %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_ingredient') }}">Ingredients</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('recipe_index') }}">Recipes</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_ingredient') }}">Ingredients</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('recipe_index') }}">Recipes</a>
+                    </li>
                 {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
@@ -25,8 +23,10 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('recipe_contact') }}">Contact</a>
                 </li>
+            </ul>
+            <ul class="navbar-nav">
                 {% if app.user %}
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown me-5">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                         {% if app.user.pseudo %} {{ app.user.pseudo }} {% else %} {{ app.user.fullname }} {% endif %}
                     </a>

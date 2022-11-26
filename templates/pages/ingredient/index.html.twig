@@ -7,7 +7,10 @@
 </style>
 
 <div class="container">
-    <h2 class=" d-flex justify-content-between mt-4">INGREDIENTS ✅ <a class="btn btn-info" href="{{path('ingredient.new')}}">Add ingredient</a></h2>
+    <h2 class=" d-flex justify-content-between mt-4">
+    <div class="shadow rounded">INGREDIENTS</div>
+    <a class="btn btn-outline-info" href="{{path('ingredient.new')}}">Add ingredient</a>
+    </h2>
 
     {# {% if not ingredients.items is same as([]) %} OR #}
     {% if ingredients.getTotalItemCount != null %}

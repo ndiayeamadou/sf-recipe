@@ -53,7 +53,7 @@ class ContactFormType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => [
-                    'class' => 'form-control btn btn-lg btn-primary mt-5'
+                    'class' => 'form-control btn btn-lg btn-primary mt-4'
                 ],
                 'label' => 'Envoyer'
             ])

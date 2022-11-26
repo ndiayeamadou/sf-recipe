@@ -7,11 +7,18 @@
 
         <div class="mt-4 d-flex justify-content-between">
             <p class="">Nom de la recette : <strong class="text-uppercase">{{ recipe.name }}</strong></p>
-            <a href="{{ path('recipe_delete', {'id': recipe.id}) }}" class="btn btn-danger">Supprimer</a>
+            <div>
+                <a href="{{ path('recipe_edit', {'id': recipe.id}) }}" class="btn btn-outline-info {{(app.user != recipe.getUser) ? 'disabled' : ''}} mr-2">Modifier</a>
+                <a href="{{ path('recipe_delete', {'id': recipe.id}) }}" class="btn btn-outline-danger {{(app.user != recipe.getUser) ? 'disabled' : ''}}">Supprimer</a>
+            </div>
         </div>
-        <div class="row">
+        <div class="row align-items-center">
             <div class="col-6">
-                <img src="{{ vich_uploader_asset(recipe, 'imageFile') }}" style="max-width: 400px;"/>
+                {% if recipe.getImageName %}
+                    <img src="{{ vich_uploader_asset(recipe, 'imageFile') }}" style="max-width: 400px;"/>
+                {% else %}
+                    <p class=""><strong class="">[No image available for this recipe.]</strong></p>
+                {% endif %}
             </div>
             <div class="col-6">
                 <p class="mt-5">Moyenne de cette recette : {{ (recipe.average | number_format(1)) }} / 5</p>
@@ -28,7 +35,7 @@
             {% endfor %}
         </fieldset>
 
-        <div class="mark">
+        <div class="bg-dark col-2 mt-3 offset-5">
             {{ form(form) }}
         </div>
     </div>
