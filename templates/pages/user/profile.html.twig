@@ -6,6 +6,7 @@
 <style>
 </style>
 
+<div class="d-flex flex-column min-vh-100">
 <div class="container mb-5">
     <h2 class="my-4 shadow">My Profile</h3>
 
@@ -20,5 +21,6 @@
         <a href="{{ path('user_pwd_edit', {'userEntity': app.user.id}) }}" class="btn btn-secondary mt-5">Changer mon mot de passe<a>
     {% endif %}
 
+</div>
 </div>
 {% endblock %}

@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     #[Route('/', name: 'profile')]
+    #[Security("is_granted('ROLE_USER')")]
     public function index() {
         /* if(!$this->getUser()) {
             $this->addFlash('warning', 'Vous devez vous connecter pour pouvoir accéder à cette page.');

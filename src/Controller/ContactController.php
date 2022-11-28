@@ -4,13 +4,13 @@ namespace App\Controller;
 
 use App\Form\ContactFormType;
 use App\Entity\Contact;
+use App\Service\SendMailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ContactController extends AbstractController
@@ -26,7 +26,7 @@ class ContactController extends AbstractController
     #[Route('/contact', name: 'recipe_contact')]
     public function createContact(
         ContactFormType $contactType, Request $request, EntityManagerInterface $emanager,
-        MailerInterface $mailer
+        SendMailService $mailService
     ) {
         /** récupérer les données de l'user s'il est connecté pour pré-remplir le formulaire */
         $contact = new Contact();
@@ -43,12 +43,12 @@ class ContactController extends AbstractController
             //dd($contact->getEmail());
 
             /** sending mail */
-            $email = (new TemplatedEmail())
-                        ->from($contact->getEmail())->to('admin@gesrecipe.com')
-                        ->subject($contact->getSubject())
-                        ->htmlTemplate('emails/contact.html.twig')
-                        ->context(['contact' => $contact]);
-            $mailer->send($email);
+            $mailService->sendEmail(
+                $contact->getEmail(),
+                $contact->getSubject(),
+                'emails/contact.html.twig',
+                ['contact' => $contact]
+            );
             /** end sending mail */
 
             $emanager->persist($form->getData());
